@@ -2,9 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Lobby } from './components/Lobby';
 import { Room } from './components/Room';
 import { AnimeHome } from './components/AnimeHome';
-import { auth, db } from './firebase';
-import { onAuthStateChanged, User } from 'firebase/auth';
-import { doc, getDoc, collection, query, where, onSnapshot, deleteDoc } from 'firebase/firestore';
 import { motion, AnimatePresence } from 'motion/react';
 import { Video, X } from 'lucide-react';
 
@@ -13,7 +10,7 @@ export default function App() {
   const [avatar, setAvatar] = useState<string | null>(null);
   const [uid, setUid] = useState<string | null>(null);
   const [roomId, setRoomId] = useState<string | null>(null);
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [currentUser, setCurrentUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   const [isPublicRoom, setIsPublicRoom] = useState(true);
@@ -23,61 +20,72 @@ export default function App() {
     return params.get('view') === 'anime' ? 'anime' : 'lobby';
   });
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      setCurrentUser(user);
-      if (user) {
-        setUid(user.uid);
-        const docRef = doc(db, 'users', user.uid);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-           setUsername(docSnap.data().username);
-           setAvatar(docSnap.data().avatar || null);
-        } else {
-           setUsername(user.email?.replace('@jvante.local', '').split('@')[0] || 'User');
-        }
-      } else {
-        setUid(null);
-        setUsername(null);
-        setAvatar(null);
-      }
+  const checkAuth = async () => {
+    const token = localStorage.getItem('auth_token');
+    if (!token) {
+      setCurrentUser(null);
+      setUid(null);
+      setUsername(null);
+      setAvatar(null);
       setLoading(false);
-    });
-    return () => unsubscribe();
+      return;
+    }
+    try {
+      const res = await fetch(`/api/users/${token}`);
+      if (res.ok) {
+        const user = await res.json();
+        setCurrentUser(user);
+        setUid(user.uid);
+        setUsername(user.username);
+        setAvatar(user.avatar || null);
+      } else {
+        localStorage.removeItem('auth_token');
+        setCurrentUser(null);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    checkAuth();
+    // Listen for custom auth change event
+    window.addEventListener('auth_changed', checkAuth);
+    return () => window.removeEventListener('auth_changed', checkAuth);
   }, []);
 
   useEffect(() => {
     if (!uid) return;
-    const q = query(collection(db, 'room_invites'), where('to', '==', uid));
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      snapshot.docChanges().forEach((change) => {
-        if (change.type === 'added') {
-           const invite = { id: change.doc.id, ...change.doc.data() };
-           setInvites(prev => [...prev, invite]);
-        }
-        if (change.type === 'removed') {
-           setInvites(prev => prev.filter(i => i.id !== change.doc.id));
-        }
-      });
-    });
-    return () => unsubscribe();
+    
+    const fetchInvites = async () => {
+       try {
+          const res = await fetch(`/api/room_invites/${uid}`);
+          if (res.ok) {
+             setInvites(await res.json());
+          }
+       } catch(e) {}
+    };
+
+    fetchInvites();
+    const interval = setInterval(fetchInvites, 5000);
+    return () => clearInterval(interval);
   }, [uid]);
 
   const handleAcceptInvite = async (invite: any) => {
      handleJoin(username || 'User', invite.roomId, avatar || undefined, invite.isPublic, invite.roomName);
      setInvites(prev => prev.filter(i => i.id !== invite.id));
-     await deleteDoc(doc(db, 'room_invites', invite.id));
+     await fetch(`/api/room_invites/${invite.id}`, { method: 'DELETE' });
   };
 
   const handleDeclineInvite = async (inviteId: string) => {
      setInvites(prev => prev.filter(i => i.id !== inviteId));
-     await deleteDoc(doc(db, 'room_invites', inviteId));
+     await fetch(`/api/room_invites/${inviteId}`, { method: 'DELETE' });
   };
 
   const [roomName, setRoomName] = useState<string | null>(null);
 
   const handleJoin = (joinedUsername: string, joinedRoomId: string, joinedAvatar?: string, isPublic = true, joinedRoomName?: string) => {
-    // Note: joinedUsername might just be the loaded one from Firebase
     setUsername(joinedUsername);
     if (joinedAvatar) setAvatar(joinedAvatar);
     setRoomId(joinedRoomId);

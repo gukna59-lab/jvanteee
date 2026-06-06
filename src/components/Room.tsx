@@ -7,8 +7,6 @@ import logoSrc from '../assets/images/jvante_logo.svg';
 import { useVoiceChat } from '../hooks/useVoiceChat';
 import { Mic, MicOff, Smile, Users, X, UserPlus, Globe, Lock } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { db } from '../firebase';
-import { doc, getDoc, collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 interface RoomProps {
   roomId: string;
@@ -57,20 +55,24 @@ export function Room({ roomId, roomName, username, uid, avatar, onLeave, isPubli
   useEffect(() => {
      if (!uid || !showInviteModal) return;
      const loadFriends = async () => {
-        const userDoc = await getDoc(doc(db, 'users', uid));
-        if (userDoc.exists() && userDoc.data().friends) {
-           const fIds = userDoc.data().friends as string[];
-           const profiles = await Promise.all(
-             fIds.map(async (id) => {
-               const d = await getDoc(doc(db, 'users', id));
-               if (d.exists()) {
-                 return { id: d.id, ...d.data() };
-               }
-               return null;
-             })
-           );
-           setFriendsList(profiles.filter(p => p !== null));
-        }
+        try {
+           const userRes = await fetch(`/api/users/${uid}`);
+           if (userRes.ok) {
+              const userData = await userRes.json();
+              if (userData.friends) {
+                 const profiles = await Promise.all(
+                   userData.friends.map(async (id: string) => {
+                     try {
+                        const res = await fetch(`/api/users/${id}`);
+                        if (res.ok) return await res.json();
+                     } catch(e) {}
+                     return null;
+                   })
+                 );
+                 setFriendsList(profiles.filter((p: any) => p !== null));
+              }
+           }
+        } catch(e) { console.error("error fetching friends", e); }
      };
      loadFriends();
   }, [uid, showInviteModal]);
@@ -78,14 +80,17 @@ export function Room({ roomId, roomName, username, uid, avatar, onLeave, isPubli
   const handleInviteFriend = async (friendId: string) => {
      if (!uid) return;
      try {
-        await addDoc(collection(db, 'room_invites'), {
-           to: friendId,
-           from: uid,
-           fromUsername: username,
-           roomId: roomId,
-           roomName: roomState?.name || roomName || `Комната ${roomId}`,
-           isPublic: isPublic,
-           createdAt: serverTimestamp()
+        await fetch('/api/room_invites', {
+           method: 'POST',
+           headers: { 'Content-Type': 'application/json' },
+           body: JSON.stringify({
+              to: friendId,
+              from: uid,
+              fromUsername: username,
+              roomId: roomId,
+              roomName: roomState?.name || roomName || `Комната ${roomId}`,
+              isPublic: isPublic
+           })
         });
         setSentInvites(prev => [...prev, friendId]);
      } catch (e) {

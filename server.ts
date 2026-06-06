@@ -1,11 +1,63 @@
 import express from 'express';
 import http from 'http';
 import path from 'path';
+import fs from 'fs';
+import crypto from 'crypto';
 import { Server } from 'socket.io';
 import { createServer as createViteServer } from 'vite';
 
+const DATA_DIR = path.join(process.cwd(), '.data');
+if (!fs.existsSync(DATA_DIR)) {
+  fs.mkdirSync(DATA_DIR);
+}
+
+const USERS_FILE = path.join(DATA_DIR, 'users.json');
+const REQUESTS_FILE = path.join(DATA_DIR, 'friend_requests.json');
+const INVITES_FILE = path.join(DATA_DIR, 'room_invites.json');
+const COMMENTS_FILE = path.join(DATA_DIR, 'anime_comments.json');
+
+function loadJson(file: string, defaultData: any) {
+  try {
+    if (fs.existsSync(file)) {
+      return JSON.parse(fs.readFileSync(file, 'utf-8'));
+    }
+  } catch (e) {
+    console.error(`Error loading ${file}:`, e);
+  }
+  return defaultData;
+}
+
+function saveJson(file: string, data: any) {
+  try {
+    fs.writeFileSync(file, JSON.stringify(data, null, 2));
+  } catch (e) {
+    console.error(`Error saving ${file}:`, e);
+  }
+}
+
+const localDb = {
+  users: loadJson(USERS_FILE, {}),
+  friendRequests: loadJson(REQUESTS_FILE, {}),
+  roomInvites: loadJson(INVITES_FILE, {}),
+  comments: loadJson(COMMENTS_FILE, {}),
+
+  saveUsers() { saveJson(USERS_FILE, this.users); },
+  saveFriendRequests() { saveJson(REQUESTS_FILE, this.friendRequests); },
+  saveRoomInvites() { saveJson(INVITES_FILE, this.roomInvites); },
+  saveComments() { saveJson(COMMENTS_FILE, this.comments); }
+};
+
+function hashPassword(password: string) {
+  return crypto.createHash('sha256').update(password).digest('hex');
+}
+
+function generateId() {
+  return crypto.randomBytes(16).toString('hex');
+}
+
 async function startServer() {
   const app = express();
+  app.use(express.json());
   const server = http.createServer(app);
   const io = new Server(server, {
     cors: { origin: '*' },
@@ -76,6 +128,151 @@ async function startServer() {
 
   app.get('/api/users/online', (req, res) => {
     res.json(Array.from(onlineUids));
+  });
+
+  app.post('/api/auth/register', (req, res) => {
+    const { login, password, username, avatar } = req.body;
+    if (!login || !password) return res.status(400).json({ error: 'Логин и пароль обязательны' });
+    
+    // Check if user exists
+    const existing = Object.values(localDb.users).find((u: any) => u.login === login);
+    if (existing) {
+      return res.status(400).json({ error: 'Пользователь с таким логином уже существует' });
+    }
+
+    const uid = generateId();
+    const newUser = {
+      uid,
+      login,
+      passwordHash: hashPassword(password),
+      username: username || login,
+      avatar: avatar || '',
+      friends: [],
+      createdAt: Date.now()
+    };
+
+    localDb.users[uid] = newUser;
+    localDb.saveUsers();
+    
+    // Auto login
+    res.json({ token: uid, user: { uid, username: newUser.username, login, avatar: newUser.avatar, friends: [] } });
+  });
+
+  app.post('/api/auth/login', (req, res) => {
+    const { login, password } = req.body;
+    if (!login || !password) return res.status(400).json({ error: 'Логин и пароль обязательны' });
+    
+    const user: any = Object.values(localDb.users).find((u: any) => u.login === login);
+    if (!user || user.passwordHash !== hashPassword(password)) {
+      return res.status(401).json({ error: 'Неверный логин или пароль' });
+    }
+
+    res.json({ token: user.uid, user: { uid: user.uid, username: user.username, login: user.login, avatar: user.avatar, friends: user.friends || [] } });
+  });
+
+  app.get('/api/users/:uid', (req, res) => {
+    const user = localDb.users[req.params.uid];
+    if (!user) return res.status(404).json({ error: 'Пользователь не найден' });
+    res.json({ uid: user.uid, username: user.username, avatar: user.avatar, friends: user.friends || [] });
+  });
+
+  app.post('/api/users/:uid/update', (req, res) => {
+    const { username, avatar } = req.body;
+    const user = localDb.users[req.params.uid];
+    if (!user) return res.status(404).json({ error: 'Пользователь не найден' });
+    
+    if (username) user.username = username;
+    if (avatar) user.avatar = avatar;
+    
+    localDb.saveUsers();
+    res.json({ success: true, user });
+  });
+
+  app.get('/api/users/search/:username', (req, res) => {
+    const usernameSearch = req.params.username.toLowerCase();
+    const user: any = Object.values(localDb.users).find((u: any) => u.username.toLowerCase() === usernameSearch);
+    if (!user) return res.status(404).json({ error: 'Пользователь не найден' });
+    res.json({ uid: user.uid, username: user.username, avatar: user.avatar });
+  });
+
+  // Friend Requests
+  app.get('/api/friends/requests/:uid', (req, res) => {
+    const myUid = req.params.uid;
+    const requests = Object.values(localDb.friendRequests).filter((req: any) => req.to === myUid);
+    res.json(requests);
+  });
+
+  app.post('/api/friends/request', (req, res) => {
+    const { from, to, fromUsername, fromAvatar } = req.body;
+    const id = generateId();
+    localDb.friendRequests[id] = { id, from, to, fromUsername, fromAvatar, createdAt: Date.now() };
+    localDb.saveFriendRequests();
+    res.json({ success: true, id });
+  });
+
+  app.post('/api/friends/accept', (req, res) => {
+    const { requestId, myUid } = req.body;
+    const request = localDb.friendRequests[requestId];
+    if (!request) return res.status(404).json({ error: 'Заявка не найдена' });
+
+    const me = localDb.users[myUid];
+    const other = localDb.users[request.from];
+    if (me && other) {
+      if (!me.friends) me.friends = [];
+      if (!other.friends) other.friends = [];
+      me.friends.push(other.uid);
+      other.friends.push(me.uid);
+      localDb.saveUsers();
+    }
+    delete localDb.friendRequests[requestId];
+    localDb.saveFriendRequests();
+    res.json({ success: true });
+  });
+
+  app.post('/api/friends/decline', (req, res) => {
+    const { requestId } = req.body;
+    delete localDb.friendRequests[requestId];
+    localDb.saveFriendRequests();
+    res.json({ success: true });
+  });
+
+  // Room Invites
+  app.get('/api/room_invites/:uid', (req, res) => {
+    const uid = req.params.uid;
+    const invites = Object.values(localDb.roomInvites).filter((inv: any) => inv.to === uid);
+    res.json(invites);
+  });
+
+  app.post('/api/room_invites', (req, res) => {
+    const { to, from, fromUsername, roomId, roomName, isPublic } = req.body;
+    const id = generateId();
+    localDb.roomInvites[id] = { id, to, from, fromUsername, roomId, roomName, isPublic, createdAt: Date.now() };
+    localDb.saveRoomInvites();
+    res.json({ success: true, id });
+  });
+
+  app.delete('/api/room_invites/:id', (req, res) => {
+    delete localDb.roomInvites[req.params.id];
+    localDb.saveRoomInvites();
+    res.json({ success: true });
+  });
+  
+  // Comments
+  app.get('/api/comments/:animeId', (req, res) => {
+    const animeId = req.params.animeId;
+    const comments = Object.values(localDb.comments)
+      .filter((c: any) => c.animeId === animeId)
+      .sort((a: any, b: any) => b.createdAt - a.createdAt);
+    res.json(comments);
+  });
+
+  app.post('/api/comments', (req, res) => {
+    const { animeId, userId, username, avatar, text, mediaUrl, mediaType } = req.body;
+    const id = generateId();
+    const comment = { id, animeId, userId, username, avatar, text, mediaUrl, mediaType, createdAt: Date.now() };
+    localDb.comments[id] = comment;
+    localDb.saveComments();
+    res.json(comment);
   });
 
   type KodikEpisode = string | {

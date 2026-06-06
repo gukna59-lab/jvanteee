@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { PlaySquare, Users, Video, LogOut, Settings, Upload, X, Search, Key, Plus, Lock, Globe, UserPlus, Check, XCircle, MonitorPlay, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { auth, db } from '../firebase';
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, User as FirebaseUser } from 'firebase/auth';
-import { doc, setDoc, getDocs, collection, query, where, updateDoc, arrayUnion, onSnapshot, deleteDoc, getDoc } from 'firebase/firestore';
 import logoSrc from '../assets/images/jvante_logo.svg';
 
 interface LobbyProps {
   onJoin: (username: string, roomId: string, avatar?: string, isPublic?: boolean, roomName?: string) => void;
   onWatchAnime?: () => void;
-  user: FirebaseUser | null;
+  user: any | null;
   defaultUsername: string | null;
   defaultAvatar: string | null;
 }
@@ -74,8 +71,7 @@ export function Lobby({ onJoin, onWatchAnime, user, defaultUsername, defaultAvat
   const [onlineUsersMap, setOnlineUsersMap] = useState<string[]>([]);
   const [activeRooms, setActiveRooms] = useState<any[]>([]);
 
-  const normalizeLogin = (value: string) => value.trim().toLowerCase();
-  const loginToAuthEmail = (value: string) => `${normalizeLogin(value)}@jvante.local`;
+  const normalizeLogin = (value: string) => value.trim();
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -94,13 +90,21 @@ export function Lobby({ onJoin, onWatchAnime, user, defaultUsername, defaultAvat
   const [friendsList, setFriendsList] = useState<any[]>([]);
 
   useEffect(() => {
+    if (user?.friends) {
+      setFriends(user.friends);
+    }
+  }, [user]);
+
+  useEffect(() => {
     const fetchFriendsProfiles = async () => {
       const profiles = await Promise.all(
         friends.map(async (id) => {
-          const d = await getDoc(doc(db, 'users', id));
-          if (d.exists()) {
-            return { id: d.id, ...d.data() };
-          }
+          try {
+             const res = await fetch(`/api/users/${id}`);
+             if (res.ok) {
+                return await res.json();
+             }
+          } catch(e) {}
           return null;
         })
       );
@@ -113,33 +117,22 @@ export function Lobby({ onJoin, onWatchAnime, user, defaultUsername, defaultAvat
     }
   }, [friends]);
 
-  // Realtime Friends and Requests
+  // Realtime Friends and Requests (polling replacement)
   useEffect(() => {
     if (!user) return;
     
-    // Listen to current user document for friends list
-    const unsubUser = onSnapshot(doc(db, 'users', user.uid), (docSnap) => {
-      if (docSnap.exists()) {
-        setFriends(docSnap.data().friends || []);
-      }
-    }, (error) => {
-      console.error("Listening for User docs failed", error);
-    });
-
-    // Listen to friend requests to me
-    const qRequests = query(collection(db, 'friend_requests'), where('to', '==', user.uid));
-    const unsubRequests = onSnapshot(qRequests, (snap) => {
-      const reqs: any[] = [];
-      snap.forEach(d => reqs.push({ id: d.id, ...d.data() }));
-      setFriendRequests(reqs);
-    }, (error) => {
-      console.error("Listening for Friend requests failed", error);
-    });
-
-    return () => {
-      unsubUser();
-      unsubRequests();
+    const fetchRequests = async () => {
+       try {
+          const res = await fetch(`/api/friends/requests/${user.uid}`);
+          if (res.ok) {
+             setFriendRequests(await res.json());
+          }
+       } catch (e) {}
     };
+
+    fetchRequests();
+    const interval = setInterval(fetchRequests, 5000);
+    return () => clearInterval(interval);
   }, [user]);
 
   // Fetch active rooms and online users
@@ -188,13 +181,12 @@ export function Lobby({ onJoin, onWatchAnime, user, defaultUsername, defaultAvat
     }
 
     try {
-      const q = query(collection(db, 'users'), where('username', '==', searchUsername.trim()));
-      const snaps = await getDocs(q);
-      if (snaps.empty) {
+      const res = await fetch(`/api/users/search/${encodeURIComponent(searchUsername.trim())}`);
+      if (!res.ok) {
         setSearchError('Пользователь не найден');
       } else {
-        const foundUser = snaps.docs[0];
-        setSearchResult({ id: foundUser.id, ...foundUser.data() });
+        const foundUser = await res.json();
+        setSearchResult({ id: foundUser.uid, ...foundUser });
       }
     } catch (err) {
       setSearchError('Ошибка поиска');
@@ -204,13 +196,15 @@ export function Lobby({ onJoin, onWatchAnime, user, defaultUsername, defaultAvat
   const handleSendRequest = async () => {
     if (!user || !searchResult) return;
     try {
-      const reqRef = doc(collection(db, 'friend_requests'));
-      await setDoc(reqRef, {
-        from: user.uid,
-        to: searchResult.id,
-        fromUsername: username,
-        fromAvatar: avatar,
-        createdAt: Date.now()
+      await fetch('/api/friends/request', {
+         method: 'POST',
+         headers: { 'Content-Type': 'application/json' },
+         body: JSON.stringify({
+            from: user.uid,
+            to: searchResult.id,
+            fromUsername: username,
+            fromAvatar: avatar
+         })
       });
       setSentRequests(prev => [...prev, searchResult.id]);
     } catch (err) {
@@ -221,15 +215,13 @@ export function Lobby({ onJoin, onWatchAnime, user, defaultUsername, defaultAvat
   const handleAcceptRequest = async (req: any) => {
     if (!user) return;
     try {
-      // Add each other
-      await updateDoc(doc(db, 'users', user.uid), {
-        friends: arrayUnion(req.from)
+      await fetch('/api/friends/accept', {
+         method: 'POST',
+         headers: { 'Content-Type': 'application/json' },
+         body: JSON.stringify({ requestId: req.id, myUid: user.uid })
       });
-      await updateDoc(doc(db, 'users', req.from), {
-        friends: arrayUnion(user.uid)
-      });
-      // Delete request
-      await deleteDoc(doc(db, 'friend_requests', req.id));
+      setFriends(prev => [...prev, req.from]);
+      setFriendRequests(prev => prev.filter(r => r.id !== req.id));
     } catch (err) {
       alert('Ошибка при принятии');
     }
@@ -237,7 +229,12 @@ export function Lobby({ onJoin, onWatchAnime, user, defaultUsername, defaultAvat
 
   const handleDeclineRequest = async (reqId: string) => {
     try {
-      await deleteDoc(doc(db, 'friend_requests', reqId));
+      await fetch('/api/friends/decline', {
+         method: 'POST',
+         headers: { 'Content-Type': 'application/json' },
+         body: JSON.stringify({ requestId: reqId })
+      });
+      setFriendRequests(prev => prev.filter(r => r.id !== reqId));
     } catch (err) {}
   };
 
@@ -245,43 +242,41 @@ export function Lobby({ onJoin, onWatchAnime, user, defaultUsername, defaultAvat
     e.preventDefault();
     setAuthError('');
     const normalizedLogin = normalizeLogin(login);
-    if (!/^[a-z0-9_.-]{3,24}$/.test(normalizedLogin)) {
-      setAuthError('Login must be 3-24 chars: latin letters, numbers, . _ -');
+    if (!/^[a-zA-Z0-9_.-]{3,24}$/.test(normalizedLogin)) {
+      setAuthError('Логин должен быть от 3 до 24 символов (английские буквы, цифры, точка, тире, подчеркивание)');
       return;
     }
     try {
-      if (isRegistering) {
-        const existing = await getDocs(query(collection(db, 'users'), where('login', '==', normalizedLogin)));
-        if (!existing.empty) {
-          setAuthError('This login is already taken');
-          return;
-        }
-        const userCred = await createUserWithEmailAndPassword(auth, loginToAuthEmail(normalizedLogin), password);
-        await setDoc(doc(db, 'users', userCred.user.uid), {
-          username: normalizedLogin,
-          login: normalizedLogin,
-          authEmail: loginToAuthEmail(normalizedLogin),
-          avatar: '',
-          friends: [],
-          createdAt: Date.now()
-        });
-        alert('Письмо отправлено на почту.');
-      } else {
-        await signInWithEmailAndPassword(auth, loginToAuthEmail(normalizedLogin), password);
+      const endpoint = isRegistering ? '/api/auth/register' : '/api/auth/login';
+      const res = await fetch(endpoint, {
+         method: 'POST',
+         headers: { 'Content-Type': 'application/json' },
+         body: JSON.stringify({ login: normalizedLogin, password })
+      });
+      const data = await res.json();
+      if (!res.ok) {
+         setAuthError(data.error || 'Ошибка аутентификации');
+         return;
       }
+      localStorage.setItem('auth_token', data.token);
+      window.dispatchEvent(new Event('auth_changed'));
     } catch (err: any) {
-      setAuthError(err.message || 'Ошибка аутентификации');
+      setAuthError('Ошибка подключения к серверу');
     }
   };
 
   const handleSaveProfile = async () => {
     if (!user) return;
     try {
-      await updateDoc(doc(db, 'users', user.uid), {
-        username: username || 'User',
-        avatar: avatar || ''
+      const res = await fetch(`/api/users/${user.uid}/update`, {
+         method: 'POST',
+         headers: { 'Content-Type': 'application/json' },
+         body: JSON.stringify({ username: username || 'User', avatar: avatar || '' })
       });
-      setIsEditingProfile(false);
+      if (res.ok) {
+         setIsEditingProfile(false);
+         window.dispatchEvent(new Event('auth_changed'));
+      }
     } catch (err: any) {
       alert("Error saving profile: " + err.message);
     }
@@ -298,6 +293,11 @@ export function Lobby({ onJoin, onWatchAnime, user, defaultUsername, defaultAvat
     } finally {
       e.target.value = '';
     }
+  };
+
+  const handleLogout = () => {
+     localStorage.removeItem('auth_token');
+     window.dispatchEvent(new Event('auth_changed'));
   };
 
   // --- RENDERS ---
@@ -355,7 +355,7 @@ export function Lobby({ onJoin, onWatchAnime, user, defaultUsername, defaultAvat
           </div>
           <div>
             <h1 className="text-xl font-bold tracking-tight truncate max-w-[150px]">{username}</h1>
-            <button onClick={() => auth.signOut()} className="text-xs text-zinc-500 hover:text-red-400 outline-none flex items-center gap-1 transition-colors">
+            <button onClick={handleLogout} className="text-xs text-zinc-500 hover:text-red-400 outline-none flex items-center gap-1 transition-colors">
               <LogOut className="w-3 h-3" /> Выйти
             </button>
           </div>
