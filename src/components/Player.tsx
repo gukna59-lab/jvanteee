@@ -375,14 +375,14 @@ export function Player({
                                {roomState.isPlaying ? 'Стоп' : 'Плей'}
                             </button>
                             <button 
-                               onClick={() => handleSeekTo(Math.max(getCurrentTime() - 15, 0), true)}
+                               onClick={() => handleSeekTo(Math.max(currentTime - 15, 0), true)}
                                className="flex items-center justify-center px-3 py-2 bg-[#1E293B] hover:bg-[#334155] border border-[#374151] text-zinc-300 text-[11px] font-bold rounded transition-colors tracking-tighter uppercase"
                                title="Назад на 15 сек"
                             >
                                -15с
                             </button>
                             <button 
-                               onClick={() => handleSeekTo(getCurrentTime() + 15, true)}
+                               onClick={() => handleSeekTo(currentTime + 15, true)}
                                className="flex items-center justify-center px-3 py-2 bg-[#1E293B] hover:bg-[#334155] border border-[#374151] text-zinc-300 text-[11px] font-bold rounded transition-colors tracking-tighter uppercase"
                                title="Вперед на 15 сек"
                             >

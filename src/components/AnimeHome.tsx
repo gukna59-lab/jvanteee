@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowLeft, Search, Grid, List, PlaySquare, TrendingUp, Star, Eye, ChevronRight, LayoutGrid, MonitorPlay, Film, Tv, Clock, Languages, ExternalLink } from 'lucide-react';
 import logoSrc from '../assets/images/jvante_logo.svg';
@@ -33,6 +33,13 @@ export function AnimeHome({ onBack, user, username, avatar }: AnimeHomeProps) {
   const [filter, setFilter] = useState<'Все' | 'Сериалы' | 'Фильмы' | 'ONA'>('Все');
   const [selectedAnime, setSelectedAnime] = useState<Anime | null>(null);
   
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 20;
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filter, search]);
+
   // Specific states for detail view (player)
   const [selectedEpisode, setSelectedEpisode] = useState(1);
   const [selectedVoice, setSelectedVoice] = useState<string>('');
@@ -170,6 +177,9 @@ export function AnimeHome({ onBack, user, username, avatar }: AnimeHomeProps) {
     });
   }, [filter, search]);
 
+  const totalPages = Math.ceil(filteredAnimeList.length / itemsPerPage);
+  const paginatedAnimeList = filteredAnimeList.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
   const handleRandomAnime = () => {
     const min = 0;
     const max = animeData.length - 1;
@@ -273,7 +283,7 @@ export function AnimeHome({ onBack, user, username, avatar }: AnimeHomeProps) {
                 </div>
 
                 <div className="grid grid-cols-2 min-[460px]:grid-cols-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-6">
-                   {filteredAnimeList.map((anime) => (
+                   {paginatedAnimeList.map((anime) => (
                       <motion.div 
                         whileHover={{ y: -5 }} 
                         key={anime.id} 
@@ -287,8 +297,8 @@ export function AnimeHome({ onBack, user, username, avatar }: AnimeHomeProps) {
                             {anime.type}
                          </div>
 
-                         <div className="aspect-[3/4] overflow-hidden relative border-b border-[#1F2937] bg-[#11141A] w-full">
-                            <img src={proxyImg(anime.img)} alt={anime.title} referrerPolicy="no-referrer" onError={(e) => { e.currentTarget.style.opacity = '0'; }} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                         <div className="pt-[140%] overflow-hidden relative border-b border-[#1F2937] bg-[#11141A] w-full">
+                            <img src={proxyImg(anime.img)} alt={anime.title} referrerPolicy="no-referrer" onError={(e) => { e.currentTarget.style.opacity = '0'; }} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
                             <div className="absolute inset-0 bg-gradient-to-t from-[#11141A] via-transparent to-transparent opacity-90 pointer-events-none"></div>
                          </div>
 
@@ -307,6 +317,47 @@ export function AnimeHome({ onBack, user, username, avatar }: AnimeHomeProps) {
                       </div>
                    )}
                 </div>
+
+                {totalPages > 1 && (
+                  <div className="flex justify-center mt-8 gap-2 pb-8">
+                     <button 
+                        onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                        disabled={currentPage === 1}
+                        className="px-4 py-2 bg-[#11141A] border border-[#1F2937] text-zinc-300 rounded-lg disabled:opacity-50 hover:bg-[#1E293B] transition-colors"
+                     >
+                        &lt; Назад
+                     </button>
+                     
+                     <div className="flex items-center gap-1 overflow-x-auto max-w-[200px] sm:max-w-none scrollbar-hide">
+                        {Array.from({ length: totalPages }).map((_, i) => {
+                           const page = i + 1;
+                           // Only show a few pages around current to avoid long list
+                           if (page === 1 || page === totalPages || (page >= currentPage - 1 && page <= currentPage + 1)) {
+                              return (
+                                 <button
+                                    key={page}
+                                    onClick={() => setCurrentPage(page)}
+                                    className={`w-10 h-10 flex items-center justify-center rounded-lg border flex-shrink-0 transition-colors ${currentPage === page ? 'bg-blue-600 border-blue-500 text-white font-bold' : 'bg-[#11141A] border-[#1F2937] text-zinc-400 hover:bg-[#1E293B] hover:text-white'}`}
+                                 >
+                                    {page}
+                                 </button>
+                              );
+                           } else if (page === currentPage - 2 || page === currentPage + 2) {
+                              return <span key={page} className="text-zinc-500">...</span>;
+                           }
+                           return null;
+                        })}
+                     </div>
+
+                     <button 
+                        onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                        disabled={currentPage === totalPages}
+                        className="px-4 py-2 bg-[#11141A] border border-[#1F2937] text-zinc-300 rounded-lg disabled:opacity-50 hover:bg-[#1E293B] transition-colors"
+                     >
+                        Вперед &gt;
+                     </button>
+                  </div>
+                )}
              </div>
 
              {/* Right Column (Sidebar) */}
@@ -346,8 +397,8 @@ export function AnimeHome({ onBack, user, username, avatar }: AnimeHomeProps) {
                 {/* Poster & Info Sidebar */}
                 <div className="w-full lg:w-[300px] shrink-0 flex flex-col gap-6">
                    <div className="bg-[#11141A] rounded-3xl border border-[#1F2937] overflow-hidden shadow-2xl">
-                      <div className="aspect-[3/4] overflow-hidden bg-[#11141A] w-full">
-                         <img src={proxyImg(selectedAnime.img)} alt={selectedAnime.title} referrerPolicy="no-referrer" onError={(e) => { e.currentTarget.style.opacity = '0'; }} className="w-full h-full object-cover" />
+                      <div className="pt-[140%] overflow-hidden bg-[#11141A] w-full relative">
+                         <img src={proxyImg(selectedAnime.img)} alt={selectedAnime.title} referrerPolicy="no-referrer" onError={(e) => { e.currentTarget.style.opacity = '0'; }} className="absolute inset-0 w-full h-full object-cover" />
                       </div>
                       <div className="p-5 flex flex-col gap-4">
                          <div className="flex items-center justify-center gap-3 bg-[#0A0C10] p-3 rounded-xl border border-[#1F2937]">
