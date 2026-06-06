@@ -278,9 +278,9 @@ export function AnimeHome({ onBack, user, username, avatar }: AnimeHomeProps) {
                             {anime.type}
                          </div>
 
-                         <div className="aspect-[3/4] overflow-hidden relative border-b border-[#1F2937] bg-[#11141A]">
-                            <img src={anime.img} alt={anime.title} referrerPolicy="no-referrer" onError={(e) => { e.currentTarget.style.display = 'none'; }} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
-                            <div className="absolute inset-0 bg-gradient-to-t from-[#11141A] via-transparent to-transparent opacity-90"></div>
+                         <div className="aspect-[3/4] overflow-hidden relative border-b border-[#1F2937] bg-[#11141A] w-full">
+                            <img src={anime.img} alt={anime.title} referrerPolicy="no-referrer" onError={(e) => { e.currentTarget.style.opacity = '0'; }} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-[#11141A] via-transparent to-transparent opacity-90 pointer-events-none"></div>
                          </div>
 
                          <div className="p-4 flex-1 flex flex-col justify-end bg-[#11141A]">
@@ -337,8 +337,8 @@ export function AnimeHome({ onBack, user, username, avatar }: AnimeHomeProps) {
                 {/* Poster & Info Sidebar */}
                 <div className="w-full lg:w-[300px] shrink-0 flex flex-col gap-6">
                    <div className="bg-[#11141A] rounded-3xl border border-[#1F2937] overflow-hidden shadow-2xl">
-                      <div className="aspect-[3/4] overflow-hidden bg-[#11141A]">
-                         <img src={selectedAnime.img} alt={selectedAnime.title} referrerPolicy="no-referrer" onError={(e) => { e.currentTarget.style.display = 'none'; }} className="w-full h-full object-cover" />
+                      <div className="aspect-[3/4] overflow-hidden bg-[#11141A] w-full">
+                         <img src={selectedAnime.img} alt={selectedAnime.title} referrerPolicy="no-referrer" onError={(e) => { e.currentTarget.style.opacity = '0'; }} className="w-full h-full object-cover" />
                       </div>
                       <div className="p-5 flex flex-col gap-4">
                          <div className="flex items-center justify-center gap-3 bg-[#0A0C10] p-3 rounded-xl border border-[#1F2937]">

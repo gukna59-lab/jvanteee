@@ -13,7 +13,7 @@ export interface Anime {
   shikimori_id: string;
 }
 
-const proxyImg = (url: string) => `https://wsrv.nl/?url=${encodeURIComponent(url)}&w=800`;
+const proxyImg = (url: string) => url; // wsrv.nl is blocked in some regions, MAL works with no-referrer
 
 const allowedVoiceovers = ['AniLibria', 'AnimeVost', 'Дубляж', 'Студийная Банда'];
 
