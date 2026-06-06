@@ -19,6 +19,15 @@ interface AnimeSource {
   qualities?: string[];
 }
 
+export const proxyImg = (url: string) => {
+  if (!url) return '';
+  if (url.includes('shikimori.one')) {
+     const cleanUrl = url.replace('https://', '');
+     return `https://i0.wp.com/${cleanUrl}`;
+  }
+  return url;
+};
+
 export function AnimeHome({ onBack, user, username, avatar }: AnimeHomeProps) {
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState<'Все' | 'Сериалы' | 'Фильмы' | 'ONA'>('Все');
@@ -279,7 +288,7 @@ export function AnimeHome({ onBack, user, username, avatar }: AnimeHomeProps) {
                          </div>
 
                          <div className="aspect-[3/4] overflow-hidden relative border-b border-[#1F2937] bg-[#11141A] w-full">
-                            <img src={anime.img} alt={anime.title} referrerPolicy="no-referrer" onError={(e) => { e.currentTarget.style.opacity = '0'; }} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                            <img src={proxyImg(anime.img)} alt={anime.title} referrerPolicy="no-referrer" onError={(e) => { e.currentTarget.style.opacity = '0'; }} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
                             <div className="absolute inset-0 bg-gradient-to-t from-[#11141A] via-transparent to-transparent opacity-90 pointer-events-none"></div>
                          </div>
 
@@ -338,7 +347,7 @@ export function AnimeHome({ onBack, user, username, avatar }: AnimeHomeProps) {
                 <div className="w-full lg:w-[300px] shrink-0 flex flex-col gap-6">
                    <div className="bg-[#11141A] rounded-3xl border border-[#1F2937] overflow-hidden shadow-2xl">
                       <div className="aspect-[3/4] overflow-hidden bg-[#11141A] w-full">
-                         <img src={selectedAnime.img} alt={selectedAnime.title} referrerPolicy="no-referrer" onError={(e) => { e.currentTarget.style.opacity = '0'; }} className="w-full h-full object-cover" />
+                         <img src={proxyImg(selectedAnime.img)} alt={selectedAnime.title} referrerPolicy="no-referrer" onError={(e) => { e.currentTarget.style.opacity = '0'; }} className="w-full h-full object-cover" />
                       </div>
                       <div className="p-5 flex flex-col gap-4">
                          <div className="flex items-center justify-center gap-3 bg-[#0A0C10] p-3 rounded-xl border border-[#1F2937]">
@@ -389,7 +398,7 @@ export function AnimeHome({ onBack, user, username, avatar }: AnimeHomeProps) {
                           {selectedAnime.screenshots.map((src, i) => (
                             <div key={i} className="aspect-video rounded-2xl overflow-hidden border border-[#1F2937]">
                               <img
-                                src={src}
+                                src={proxyImg(src)}
                                 alt={`Кадр ${i + 1}`}
                                 referrerPolicy="no-referrer"
                                 className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
@@ -433,8 +442,8 @@ export function AnimeHome({ onBack, user, username, avatar }: AnimeHomeProps) {
                          {!isPlaying ? (
                            <>
                              <img 
-                               src={selectedAnime.screenshots[0] || selectedAnime.img} 
-                               onError={(e) => { e.currentTarget.src = selectedAnime.img; }}
+                               src={proxyImg(selectedAnime.screenshots[0] || selectedAnime.img)} 
+                               onError={(e) => { e.currentTarget.src = proxyImg(selectedAnime.img); }}
                                referrerPolicy="no-referrer" 
                                className="absolute inset-0 w-full h-full object-cover opacity-30" 
                                alt="Player background"
@@ -467,7 +476,7 @@ export function AnimeHome({ onBack, user, username, avatar }: AnimeHomeProps) {
                              <CustomPlayer
                                src={kodikUrl}
                                title={selectedAnime.title}
-                               poster={selectedAnime.screenshots[0] || selectedAnime.img}
+                               poster={proxyImg(selectedAnime.screenshots[0] || selectedAnime.img)}
                                qualities={availableQualities}
                                selectedQuality={selectedQuality}
                                onQualityChange={(quality) => {
