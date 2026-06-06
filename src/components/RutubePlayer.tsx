@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useImperativeHandle, forwardRef } from 'react';
 
 interface RutubePlayerProps {
   url: string;
@@ -12,7 +12,7 @@ interface RutubePlayerProps {
   onReportProgress: (time: number) => void;
 }
 
-export function RutubePlayer({
+export const RutubePlayer = forwardRef(({
   url,
   playing,
   timestamp,
@@ -22,12 +22,24 @@ export function RutubePlayer({
   onPause,
   onSeek,
   onReportProgress
-}: RutubePlayerProps) {
+}: RutubePlayerProps, ref) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [videoId, setVideoId] = useState<string | null>(null);
   const currentTimeRef = useRef(0);
   const isPlayingRef = useRef(false);
   const skipNextEventRef = useRef(false);
+  const durationRef = useRef(0);
+
+  useImperativeHandle(ref, () => ({
+    seekTo: (time: number) => {
+      currentTimeRef.current = time;
+      skipNextEventRef.current = true;
+      sendCommand('player:setCurrentTime', { time });
+      setTimeout(() => { skipNextEventRef.current = false; }, 1000);
+    },
+    getCurrentTime: () => currentTimeRef.current,
+    getDuration: () => durationRef.current
+  }));
 
   useEffect(() => {
     const match = url.match(/rutube\.ru\/video\/([a-zA-Z0-9]+)/);
@@ -71,6 +83,8 @@ export function RutubePlayer({
         const message = JSON.parse(event.data);
         if (message.type === 'player:currentTime') {
           currentTimeRef.current = message.data.time;
+        } else if (message.type === 'player:durationChange') {
+          durationRef.current = message.data.time;
         } else if (message.type === 'player:changeState') {
           const state = message.data.state;
           if (state === 'playing') {
@@ -149,4 +163,4 @@ export function RutubePlayer({
         />
     </div>
   );
-}
+});

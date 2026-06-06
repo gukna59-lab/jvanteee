@@ -122,13 +122,16 @@ export function Player({
   // Report progress loop for the current user
   useEffect(() => {
     const interval = setInterval(() => {
-      if (!isCustomPlayer && playerRef.current) {
+      if (playerRef.current) {
         const time = getPlayerTime();
-        if (time === null) return;
-        onReportProgress(time);
-        if (!isDraggingSeek) setCurrentTime(time);
-        const nextDuration = getPlayerDuration();
-        if (nextDuration !== null && Number.isFinite(nextDuration) && nextDuration > 0) setDuration(nextDuration);
+        if (time !== null) {
+          if (!isCustomPlayer) {
+             onReportProgress(time);
+          }
+          if (!isDraggingSeek) setCurrentTime(time);
+          const nextDuration = getPlayerDuration();
+          if (nextDuration !== null && Number.isFinite(nextDuration) && nextDuration > 0) setDuration(nextDuration);
+        }
       }
     }, 1000);
     return () => clearInterval(interval);
@@ -226,29 +229,37 @@ export function Player({
             <VideoPlaceholder isAdmin={isCreator} inputUrl={inputUrl} setInputUrl={setInputUrl} handleUrlSubmit={handleUrlSubmit} />
           </div>
         ) : isRutube ? (
-          <RutubePlayer 
-            url={roomState.videoUrl}
-            playing={roomState.isPlaying}
-            timestamp={roomState.timestamp}
-            lastUpdateAt={roomState.lastUpdateAt}
-            isAdmin={isCreator}
-            onPlay={(t) => isCreator && onPlayStateChange(true, t ?? getCurrentTime())}
-            onPause={(t) => isCreator && onPlayStateChange(false, t ?? getCurrentTime())}
-            onSeek={onSeek}
-            onReportProgress={onReportProgress}
-          />
+          <div className="w-full h-full relative">
+            <div className="absolute inset-0 bg-transparent z-10"></div>
+            <RutubePlayer 
+              ref={playerRef}
+              url={roomState.videoUrl}
+              playing={roomState.isPlaying}
+              timestamp={roomState.timestamp}
+              lastUpdateAt={roomState.lastUpdateAt}
+              isAdmin={isCreator}
+              onPlay={(t) => isCreator && onPlayStateChange(true, t ?? getCurrentTime())}
+              onPause={(t) => isCreator && onPlayStateChange(false, t ?? getCurrentTime())}
+              onSeek={onSeek}
+              onReportProgress={onReportProgress}
+            />
+          </div>
         ) : isVK ? (
-          <VKPlayer 
-            url={roomState.videoUrl}
-            playing={roomState.isPlaying}
-            timestamp={roomState.timestamp}
-            lastUpdateAt={roomState.lastUpdateAt}
-            isAdmin={isCreator}
-            onPlay={(t) => isCreator && onPlayStateChange(true, t ?? getCurrentTime())}
-            onPause={(t) => isCreator && onPlayStateChange(false, t ?? getCurrentTime())}
-            onSeek={onSeek}
-            onReportProgress={onReportProgress}
-          />
+          <div className="w-full h-full relative">
+            <div className="absolute inset-0 bg-transparent z-10"></div>
+            <VKPlayer 
+              ref={playerRef}
+              url={roomState.videoUrl}
+              playing={roomState.isPlaying}
+              timestamp={roomState.timestamp}
+              lastUpdateAt={roomState.lastUpdateAt}
+              isAdmin={isCreator}
+              onPlay={(t) => isCreator && onPlayStateChange(true, t ?? getCurrentTime())}
+              onPause={(t) => isCreator && onPlayStateChange(false, t ?? getCurrentTime())}
+              onSeek={onSeek}
+              onReportProgress={onReportProgress}
+            />
+          </div>
         ) : (
           <div className="absolute inset-0 w-full h-full text-white">
             <PlayerComponent
@@ -363,24 +374,20 @@ export function Player({
                                {roomState.isPlaying ? <Pause className="w-3 h-3" /> : <Play className="w-3 h-3" />}
                                {roomState.isPlaying ? 'Стоп' : 'Плей'}
                             </button>
-                            {isCustomPlayer && (
-                               <>
-                                  <button 
-                                     onClick={() => handleSeekTo(Math.max(getCurrentTime() - 15, 0), true)}
-                                     className="flex items-center justify-center px-3 py-2 bg-[#1E293B] hover:bg-[#334155] border border-[#374151] text-zinc-300 text-[11px] font-bold rounded transition-colors tracking-tighter uppercase"
-                                     title="Назад на 15 сек"
-                                  >
-                                     -15с
-                                  </button>
-                                  <button 
-                                     onClick={() => handleSeekTo(getCurrentTime() + 15, true)}
-                                     className="flex items-center justify-center px-3 py-2 bg-[#1E293B] hover:bg-[#334155] border border-[#374151] text-zinc-300 text-[11px] font-bold rounded transition-colors tracking-tighter uppercase"
-                                     title="Вперед на 15 сек"
-                                  >
-                                     +15с
-                                  </button>
-                               </>
-                            )}
+                            <button 
+                               onClick={() => handleSeekTo(Math.max(getCurrentTime() - 15, 0), true)}
+                               className="flex items-center justify-center px-3 py-2 bg-[#1E293B] hover:bg-[#334155] border border-[#374151] text-zinc-300 text-[11px] font-bold rounded transition-colors tracking-tighter uppercase"
+                               title="Назад на 15 сек"
+                            >
+                               -15с
+                            </button>
+                            <button 
+                               onClick={() => handleSeekTo(getCurrentTime() + 15, true)}
+                               className="flex items-center justify-center px-3 py-2 bg-[#1E293B] hover:bg-[#334155] border border-[#374151] text-zinc-300 text-[11px] font-bold rounded transition-colors tracking-tighter uppercase"
+                               title="Вперед на 15 сек"
+                            >
+                               +15с
+                            </button>
                             <button 
                                onClick={onForceSync}
                                className="flex items-center gap-2 px-4 py-2 bg-[#EF4444]/10 hover:bg-[#EF4444]/20 border border-[#EF4444]/30 text-[#F87171] text-[11px] font-bold rounded uppercase tracking-tighter"
@@ -414,13 +421,13 @@ export function Player({
             )}
         </div>
 
-        {roomState.videoUrl && !isCustomPlayer && (
-          <div className="px-4 pb-4 -mt-1 flex items-center gap-3">
+        {roomState.videoUrl && (
+          <div className="px-4 pb-4 -mt-1 flex items-center gap-3 relative z-20">
             <span className="text-xs font-mono text-zinc-400 w-12 text-right">{formatTime(currentTime)}</span>
             <input
               type="range"
               min={0}
-              max={duration || Math.max(currentTime, roomState.timestamp, 1)}
+              max={duration || Math.max(currentTime, roomState.timestamp, 7200)}
               step={0.1}
               value={currentTime}
               disabled={!isCreator}

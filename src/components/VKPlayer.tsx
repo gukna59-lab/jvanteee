@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useImperativeHandle, forwardRef } from 'react';
 
 interface VKPlayerProps {
   url: string;
@@ -12,7 +12,7 @@ interface VKPlayerProps {
   onReportProgress: (time: number) => void;
 }
 
-export function VKPlayer({
+export const VKPlayer = forwardRef(({
   url,
   playing,
   timestamp,
@@ -22,9 +22,17 @@ export function VKPlayer({
   onPause,
   onSeek,
   onReportProgress
-}: VKPlayerProps) {
+}: VKPlayerProps, ref) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [videoCode, setVideoCode] = useState<{ oid: string; id: string; hash?: string } | null>(null);
+  const currentTimeRef = useRef(timestamp);
+
+  useImperativeHandle(ref, () => ({
+    seekTo: (time: number) => {
+      currentTimeRef.current = time;
+    },
+    getCurrentTime: () => currentTimeRef.current
+  }));
 
   useEffect(() => {
     // try to match vk.com/video-123_456
@@ -88,4 +96,4 @@ export function VKPlayer({
         />
     </div>
   );
-}
+});
