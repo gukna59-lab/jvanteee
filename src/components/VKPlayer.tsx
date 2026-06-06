@@ -83,13 +83,13 @@ export const VKPlayer = forwardRef(({
   }, [timestamp]);
 
   return (
-    <div className="w-full h-full relative" style={{ pointerEvents: 'auto' }}>
+    <div className="w-full h-full relative" style={{ pointerEvents: 'none' }}>
       {/* VK iframe has limited postMessage API for time sync, so we reload on major seeks */}
        <iframe
           key={iframeKey}
           ref={iframeRef}
           src={embedUrl}
-          className="w-full h-full"
+          className="w-full h-full pointer-events-none"
           frameBorder="0"
           allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
           allowFullScreen

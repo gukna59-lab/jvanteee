@@ -156,7 +156,7 @@ export const RutubePlayer = forwardRef(({
        <iframe
           ref={iframeRef}
           src={`https://rutube.ru/play/embed/${videoId}?pver=v2`}
-          className="w-full h-full"
+          className="w-full h-full pointer-events-none"
           frameBorder="0"
           allow="clipboard-write; autoplay"
           allowFullScreen

@@ -43,13 +43,13 @@ export const animeData: Anime[] = [
     "rank": 2,
     "type": "ONA",
     "shikimori_id": "61469",
-    "img": "https://shikimori.one/assets/globals/missing_original.jpg",
+    "img": "https://cdn.myanimelist.net/images/anime/1448/154111l.jpg",
     "plot": "Конец девятнадцатого века. Крупный предприниматель [character=23652]Стивен Стил[/character] решает организовать событие, которое всколыхнёт мир. По всей Америке разносятся слухи о том, что на западе страны начинаются величайшие в истории скачки. Отвесные скалы, песчаные дюны, раскалённое солнце и путешествие по бескрайним пустошам длиною в шесть тысяч километров — это гонка «Стальной шар». Лучшие скакуны со всего света готовы попытать удачу ради всемирной славы и главного приза в пятьдесят миллионов долларов.\n[character=19492]Джонни Джостар[/character] — бывший жокей, в прошлом снискавший немалый успех на своём поприще. К его огромному сожалению, судьба сыграла с ним злую шутку, из-за чего юноша оказался прикован к инвалидной коляске и был вынужден завязать с конным спортом. Прибыв в Сан-Диего он, как и тысячи других зевак, с нетерпением ожидал грандиозного мероприятия, но прямо перед началом стал свидетелем конфликта между местным вором-карманником и эксцентричным молодым человеком с двумя стальными шарами на поясе. Случайно коснувшись одного из шаров, Джонни впервые за два года почувствовал прилив сил в своих, казалось бы, неизлечимо парализованных ногах. Безудержное желание узнать секрет загадочных шаров сподвигло [character=19492]ДжоДжо[/character] снова оседлать лошадь, чтобы принять участие в гонке и начать своё невероятное приключение!",
     "screenshots": [
-      "https://shikimori.one/system/screenshots/original/767498a53be31a460d66f9231b6e9ad852288efe.jpg?1773934597",
-      "https://shikimori.one/system/screenshots/original/a289b0fc1f9ebcd75c27a13d570e8ca85d4d117a.jpg?1773934598",
-      "https://shikimori.one/system/screenshots/original/67dc45ccdfd96fbdf429be136fa5dd2da9a2b8f5.jpg?1773934598",
-      "https://shikimori.one/system/screenshots/original/d445d3950e532c7df6eaf42944a9a405df8aa47e.jpg?1773934598"
+      "https://cdn.myanimelist.net/images/anime/1891/149307l.jpg",
+      "https://cdn.myanimelist.net/images/anime/1723/152195l.jpg",
+      "https://cdn.myanimelist.net/images/anime/1448/154111l.jpg",
+      "https://cdn.myanimelist.net/images/anime/1228/154477l.jpg"
     ],
     "episodes": 1,
     "voiceovers": [
@@ -534,13 +534,13 @@ export const animeData: Anime[] = [
     "rank": 25,
     "type": "Сериалы",
     "shikimori_id": "59978",
-    "img": "https://shikimori.one/assets/globals/missing_original.jpg",
+    "img": "https://cdn.myanimelist.net/images/anime/1921/154528l.jpg",
     "plot": "Эльфийская волшебница Фрирен, в прошлом одолевшая Короля демонов вместе со своими героическими товарищами [character=186854]Химмелем[/character], Хайтером и Айзеном, продолжает странствовать по миру. Пытаясь лучше понять чувства людей и исполнить последние желания ушедших друзей, Фрирен отправляется в путешествие со своей ученицей Ферн и воином Штарком. Её путь лежит на север, где леденящая опасность скрывается не только в ненастной погоде, но и в намерениях местных обитателей. По дороге к месту, которое, по преданию, является раем на земле, Фрирен и компании предстоит как встретиться с новыми друзьями, так и столкнуться лицом к лицу с могущественным злом, затаившимся в чаще непролазного леса.",
     "screenshots": [
-      "https://shikimori.one/system/screenshots/original/9c075644152d1352c45638794cbee1ba2c31bf92.jpg?1768579283",
-      "https://shikimori.one/system/screenshots/original/c03cfde2001a2935f535765107c8b55789ebf5aa.jpg?1768579284",
-      "https://shikimori.one/system/screenshots/original/d644d72b6cae80cac89e84f2c8f1769dad4b82ba.jpg?1768579284",
-      "https://shikimori.one/system/screenshots/original/bd5f2375d90268dcff83b23b4002d3570a8e1646.jpg?1768579284"
+      "https://cdn.myanimelist.net/images/anime/1522/145800l.jpg",
+      "https://cdn.myanimelist.net/images/anime/1750/145801l.jpg",
+      "https://cdn.myanimelist.net/images/anime/1463/146324l.jpg",
+      "https://cdn.myanimelist.net/images/anime/1089/148301l.jpg"
     ],
     "episodes": 10,
     "voiceovers": [
@@ -619,9 +619,14 @@ export const animeData: Anime[] = [
     "rank": 29,
     "type": "Фильмы",
     "shikimori_id": "59571",
-    "img": "https://shikimori.one/assets/globals/missing_original.jpg",
+    "img": "https://cdn.myanimelist.net/images/anime/1379/145452l.jpg",
     "plot": "Война с титанами достигает своего апогея, когда Эрен Йегер [エレン・イェーガー] активирует силу «Девяти Титанов», высвобождая «Гул Земли», чтобы поглотить все народы за пределами острова Парадиз и освободить своих соратников от вечного угнетения. В это время Микаса [ミカサ・アッカーマン], Армин [アルミン・アルレルト], Леви [リヴァイ] и другие члены «Разведывательного корпуса» объединяются, чтобы остановить Эрена. Им предстоит преодолеть внутренние терзания и осознать, что их некогда близкий друг стал олицетворением разрушения.\n\n[i]Компиляция двух часовых эпизодов «[anime=51535]Атака титанов: Финал — Заключительная глава[/anime]».[/i]",
-    "screenshots": [],
+    "screenshots": [
+      "https://cdn.myanimelist.net/images/anime/1972/144820l.jpg",
+      "https://cdn.myanimelist.net/images/anime/1379/145452l.jpg",
+      "https://cdn.myanimelist.net/images/anime/1279/154294l.jpg",
+      "https://cdn.myanimelist.net/images/anime/1350/157785l.jpg"
+    ],
     "episodes": 1,
     "voiceovers": [
       "AniLibria"
@@ -912,13 +917,11 @@ export const animeData: Anime[] = [
     "rank": 43,
     "type": "ONA",
     "shikimori_id": "60489",
-    "img": "https://shikimori.one/assets/globals/missing_original.jpg",
+    "img": "https://cdn.myanimelist.net/images/anime/1182/149879l.jpg",
     "plot": "Инопланетянин по имени [character=208263 такопи] прилетает на Землю с миссией: «делиться счастьем и дарить окружающим радость». Но его чистое стремление сталкивается с суровой реальностью, полной жестокости и одиночества. Каждая попытка [character=208263 такопи] обрадовать [character=208070]Сидзуке Кудзэ[/character] перерастает в новые несчастья. Простая игрушка или невинный совет открывают сотни путей прямиком в бездну. [character=208263 такопи] искренне верит, что способен сделать людей счастливыми, но что делать, если чужая боль слишком глубока, а каждое вмешательство лишь портит и без того тяжёлую жизнь?",
     "screenshots": [
-      "https://shikimori.one/system/screenshots/original/d7adaf114000b95b05acab3a0124b906fbea5256.jpg?1751047314",
-      "https://shikimori.one/system/screenshots/original/ce8bdd58915ebc53314a438b298db3a84dae6438.jpg?1751047315",
-      "https://shikimori.one/system/screenshots/original/380b0353c782bb2b966af7906c1c005773446472.jpg?1751047316",
-      "https://shikimori.one/system/screenshots/original/33c60e8e34b1fa8b8ef1008d4c62186244311a38.jpg?1751047317"
+      "https://cdn.myanimelist.net/images/anime/1444/146894l.jpg",
+      "https://cdn.myanimelist.net/images/anime/1182/149879l.jpg"
     ],
     "episodes": 6,
     "voiceovers": [
@@ -1149,13 +1152,13 @@ export const animeData: Anime[] = [
     "rank": 54,
     "type": "Сериалы",
     "shikimori_id": "60098",
-    "img": "https://shikimori.one/assets/globals/missing_original.jpg",
+    "img": "https://cdn.myanimelist.net/images/anime/1959/151055l.jpg",
     "plot": "Начинается последняя и самая отчаянная битва за будущее всего общества героев. После побега [character=122103]Томуры Сигараки[/character] и падения общества героев Япония погрузилась в хаос.[character=122103]Сигараки[/character], окончательно ставший совершенным сосудом для [character=141358]Все За Одного[/character], теперь обладает невероятной силой, способной уничтожить всё на своём пути. Против него выходят все оставшиеся герои, включая студентов академии «Юэй», которым приходится быстро взрослеть в условиях настоящей войны.\n\nВ центре этого апокалипсиса оказывается [character=117909]Идзуку Мидория[/character], вынужденный использовать все скрытые возможности своей причуды «Один за всех», чтобы остановить надвигающуюся угрозу. Ему предстоит не только сразиться с [character=122103]Сигараки[/character], но и попытаться достучаться до того человека, который когда-то скрывался внутри монстра. Эта битва станет проверкой не только его силы, но и самой идеи героизма, за которую он всегда боролся. Судьба общества героев висит на волоске, и цена, которую придётся заплатить за мир, может оказаться слишком высока.",
     "screenshots": [
-      "https://shikimori.one/system/screenshots/original/7bbee0e545e48401507c63ca5620923a17ffabb2.jpg?1759576895",
-      "https://shikimori.one/system/screenshots/original/834d39229e33380e3408deb3f6fb45e1ac03750f.jpg?1759576896",
-      "https://shikimori.one/system/screenshots/original/f88412844427b97d77caab7bcc7876a709c414e8.jpg?1759576897",
-      "https://shikimori.one/system/screenshots/original/d419b22b170d4ee6cb422243f4af91d4df2fcb8b.jpg?1759576898"
+      "https://cdn.myanimelist.net/images/anime/1766/146050l.jpg",
+      "https://cdn.myanimelist.net/images/anime/1370/146328l.jpg",
+      "https://cdn.myanimelist.net/images/anime/1441/148713l.jpg",
+      "https://cdn.myanimelist.net/images/anime/1276/150585l.jpg"
     ],
     "episodes": 11,
     "voiceovers": [
@@ -1340,13 +1343,11 @@ export const animeData: Anime[] = [
     "rank": 63,
     "type": "Сериалы",
     "shikimori_id": "61930",
-    "img": "https://shikimori.one/assets/globals/missing_original.jpg",
+    "img": "https://cdn.myanimelist.net/images/anime/1120/152280l.jpg",
     "plot": "Продолжение истории девушек‑пони, в которой Серая Золушка сталкивается с миром большого спорта.\n[character=162150 огури-кэп] — провинциальная выскочка, чья невероятная манера бега уже перевернула японскую скаковую сцену и привлекла внимание сильнейших девушек-пони старшего поколения. Теперь на её пути появятся зарубежные звёзды ипподрома, прибывшие в Японию, чтобы завоевать Japan Cup на ключевых осенне‑зимних стартах. Для [character=162150]Огури[/character] каждое новое дерби превращается в испытание не только скорости и выносливости, но и характера: ей важно научиться принимать поражения, менять тактику, не потеряв ту самую дерзкую страсть к бегу, которая когда‑то вывела Серую Золушку с тихих провинциальных дорожек на вершину национальной сцены.\nСумеет ли [character=162150 огури-кэп] не сломаться под грузом славы, выдержать натиск [character=161405 тамамо-кросс] и новых международных звёзд, снова превратив стартовые ворота в шаг на пути к становлению легендой?",
     "screenshots": [
-      "https://shikimori.one/system/screenshots/original/92df64767e211b6fd0a824039599e4039f3a9b24.jpg?1759678992",
-      "https://shikimori.one/system/screenshots/original/155ab1052dd6de1ce060604b557af3287566a433.jpg?1759678993",
-      "https://shikimori.one/system/screenshots/original/39019c2ff69e23394d7222edf84778ef10f509a7.jpg?1759678993",
-      "https://shikimori.one/system/screenshots/original/0e200b2aae8737e2abf49f7323e50030a8ea2abf.jpg?1759678994"
+      "https://cdn.myanimelist.net/images/anime/1120/152280l.jpg",
+      "https://cdn.myanimelist.net/images/anime/1823/153928l.jpg"
     ],
     "episodes": 10,
     "voiceovers": [
@@ -1489,9 +1490,14 @@ export const animeData: Anime[] = [
     "rank": 70,
     "type": "Фильмы",
     "shikimori_id": "59192",
-    "img": "https://shikimori.one/assets/globals/missing_original.jpg",
+    "img": "https://cdn.myanimelist.net/images/anime/1681/148216l.jpg",
     "plot": "Тысячу лет японцев терзают демоны, которые убивают людей ради насыщения или просто ради удовольствия. Веками люди гибли от их рук, будучи не в состоянии сопротивляться их силе. И только одна организация, некогда вставшая на путь борьбы с демонами, защищает людей, истребляет монстров и пытается уничтожить их прародителя, смерть которого положит конец существованию всех демонов разом.\nРодоначальник демонов [character=151156]Кибуцудзи Мудзан[/character] настолько силён и хитёр, что всё это время успешно ускользал от охотников, с каждым годом становясь всё сильней и неуязв��мей. Несмотря на это, глава клана охотников [character=151150]Кагая Убуясики[/character] верит, что именно его поколение столпов сможет убить Мудзана. Ради этого столпы постоянно улучшают свои боевые навыки, ради этого они устроили рядовым членами организации адские тренировки. \nОднако передышка, когда демоны затаились, оказалась недолгой. Тренировки со столпами завершились. Пришла пора доказать, что изнуряющие занятия не прошли даром, и на деле продемонстрировать мощь охотников, годами мечтающих о том, чтобы извести зло на корню.",
-    "screenshots": [],
+    "screenshots": [
+      "https://cdn.myanimelist.net/images/anime/1687/143891l.jpg",
+      "https://cdn.myanimelist.net/images/anime/1465/146881l.jpg",
+      "https://cdn.myanimelist.net/images/anime/1681/148216l.jpg",
+      "https://cdn.myanimelist.net/images/anime/1921/150778l.jpg"
+    ],
     "episodes": 1,
     "voiceovers": [
       "AniLibria"
@@ -1505,9 +1511,14 @@ export const animeData: Anime[] = [
     "rank": 71,
     "type": "Фильмы",
     "shikimori_id": "61952",
-    "img": "https://shikimori.one/assets/globals/missing_original.jpg",
+    "img": "https://cdn.myanimelist.net/images/anime/1288/151853l.jpg",
     "plot": "После долгой тишины между мирами людей и духов вновь раздаётся тревога: внезапная атака рушит хрупкое равновесие. Молодой дух-оборотень [character=158647] вместе с бывшей ученицей своего мастера [character=278128] отправляются в опасное путешествие, чтобы раскрыть заговор, стоящий за атакой, и предотвратить войну между двумя мирами. Теперь им предстоит не только защитить тех, кого они любят, но и сохранить, равновесие между природой и человечеством.",
-    "screenshots": [],
+    "screenshots": [
+      "https://cdn.myanimelist.net/images/anime/1515/151848l.jpg",
+      "https://cdn.myanimelist.net/images/anime/1619/151849l.jpg",
+      "https://cdn.myanimelist.net/images/anime/1131/151850l.jpg",
+      "https://cdn.myanimelist.net/images/anime/1033/151851l.jpg"
+    ],
     "episodes": 1,
     "voiceovers": [
       "AniLibria"
@@ -1713,13 +1724,13 @@ export const animeData: Anime[] = [
     "rank": 81,
     "type": "Сериалы",
     "shikimori_id": "1535",
-    "img": "https://shikimori.one/assets/globals/missing_original.jpg?1711947446",
+    "img": "https://cdn.myanimelist.net/images/anime/1079/138100l.jpg",
     "plot": "Изнывающий от скуки [[Синигами]] Рюк [リューク] бросает одну из своих Тетрадей смерти в мир людей. Просто так, потехи ради, посмотреть, что из этого выйдет.\nМежду тем, в Японии на школьной лужайке эту самую тетрадь находит Лайт Ягами [夜神月] — лучший ученик школы, сын полицейского. Заинтригованный инструкцией на обложке, он забирает тетрадь домой и пробует её в деле, вписав туда имя преступника. А вдруг сработает?\nВскоре весь мир замечает странные массовые смерти преступников, а в сети загадочного убийцу окрещают [[Кирой]].\nДля поимки Киры [夜神月] Интерпол привлекает легендарного детектива [character=71]L[/character], в одиночку раскрывавшего наиболее сложные и запутанные преступления. Кто такой [character=71]L[/character] на самом деле — не знает никто.\nОтныне в противостоянии Киры и [character=71]L[/character] предстоит победить тому, кто первым раскроет истинную личность противника и раньше оппонента нанесёт удар.",
     "screenshots": [
-      "https://shikimori.one/system/screenshots/original/50f24d6cdd6cbaaccbb89cca9a7d73bbd6693f96.jpg?1511673367",
-      "https://shikimori.one/system/screenshots/original/df7f907868c71e47bb86c9101f6d1a54714ad74f.jpg?1511673367",
-      "https://shikimori.one/system/screenshots/original/6389be1ec35376b8344ae0c2bbf614b41f9cfb4d.jpg?1511673368",
-      "https://shikimori.one/system/screenshots/original/74582494ad6727fb2f35801a4ce411eac7019fc3.jpg?1511673368"
+      "https://cdn.myanimelist.net/images/anime/9/9453l.jpg",
+      "https://cdn.myanimelist.net/images/anime/7/20451l.jpg",
+      "https://cdn.myanimelist.net/images/anime/9/21498l.jpg",
+      "https://cdn.myanimelist.net/images/anime/3/22530l.jpg"
     ],
     "episodes": 37,
     "voiceovers": [
@@ -2182,7 +2193,7 @@ export const animeData: Anime[] = [
     "rank": 103,
     "type": "Сериалы",
     "shikimori_id": "59636",
-    "img": "https://shikimori.one/assets/globals/missing_original.jpg",
+    "img": "https://cdn.myanimelist.net/images/anime/1626/148097l.jpg",
     "plot": "Не все легенды рождаются под овации многотысячных стадионов и светом софитов. Иногда самые громкие истории начинаются в оглушительной тишине, там, где не слышно шума столицы и не видно блеска наград, вдали от славы Центральной Академии Трейсен. Здесь, в провинциальном городке Касамацу, жизнь течёт размеренно и предсказуемо. Утром — работа, вечером — разговоры в местных забегаловках, а по выходным всё население собирается на ипподроме, где вместо сверкающих изумрудных газонов — вытоптанная земля, а вместо амбициозных тренеров в дорогих костюмах — старые ветераны, знающие каждую девушку-пони по имени.\nВсё меняется, когда молодой и амбициозный тренер [character=199041 дзё-китахара], замечает среди новеньких учениц одну, имеющую потенциал, способный потрясти весь мир скачек — [character=162150 огури-кэп]. Она — настоящий монстр на беговом круге, неогранённый алмаз с невероятным талантом и таким же невероятным аппетитом. Со временем, всё чаще побеждая в забегах и завоёвывая авторитет, для местных жителей она становится живой легендой, однако за пределами Касамацу о ней до сих пор никто и не слышал.\nСможет ли [character=162150 огури-кэп], «серая лошадка» без элитной подготовки, прославиться за пределами Касамацу, бросить вызов лучшим из лучших и вписать своё имя в историю? Какой ценой даётся путь от никому неизвестной провинциалки до легенды скачек? И что на самом деле определяет чемпиона: врождённый талант или отточенная система тренировок?",
     "screenshots": [
       "https://shikimori.one/system/screenshots/original/bc8e2ffbaad318a8f3160a77855d119350c114d2.jpg?1743929271",
@@ -2499,13 +2510,12 @@ export const animeData: Anime[] = [
     "rank": 118,
     "type": "ONA",
     "shikimori_id": "60557",
-    "img": "https://shikimori.one/assets/globals/missing_original.jpg",
+    "img": "https://cdn.myanimelist.net/images/anime/1421/153427l.jpg",
     "plot": "Путешествие к бессмертию 4",
     "screenshots": [
-      "https://shikimori.one/system/screenshots/original/a40cbea1734a97786588193949e59c4b93ecb3f3.jpg?1743881011",
-      "https://shikimori.one/system/screenshots/original/2a7d5bd868f0e7a1495f05630af23fddea7a418f.jpg?1743881012",
-      "https://shikimori.one/system/screenshots/original/58c113e6f9426e251df70216f00341d9515a236b.jpg?1743881012",
-      "https://shikimori.one/system/screenshots/original/d412fd3ff8740d81befa943323d569e5501340cf.jpg?1743881012"
+      "https://cdn.myanimelist.net/images/anime/1388/149196l.jpg",
+      "https://cdn.myanimelist.net/images/anime/1321/149197l.jpg",
+      "https://cdn.myanimelist.net/images/anime/1421/153427l.jpg"
     ],
     "episodes": 52,
     "voiceovers": [
@@ -2541,9 +2551,11 @@ export const animeData: Anime[] = [
     "rank": 120,
     "type": "ONA",
     "shikimori_id": "61903",
-    "img": "https://shikimori.one/assets/globals/missing_original.jpg",
+    "img": "https://cdn.myanimelist.net/images/anime/1112/150697l.jpg",
     "plot": "Время неумолимо бежит, и вот уже несколько лет отделяют [character=136685]Миюки Сироганэ[/character] и [character=136359]Кагую Синомию[/character] от выпускного в старшей школе. Однажды, разбирая старые вещи, [character=136359]Кагуя[/character] случайно наткнулась на сокровище — фотоальбом, хранящий в себе застывшие мгновения школьных лет. При виде знакомых лиц и мест, её охватила тёплая волна ностальгии, и она, не раздумывая, погрузилась в просмотр, чтобы вновь пережить дорогие сердцу моменты юности. В этом альбоме хранятся воспоминания не только Кагуи, но и других членов школьного совета и их друзей.",
-    "screenshots": [],
+    "screenshots": [
+      "https://cdn.myanimelist.net/images/anime/1112/150697l.jpg"
+    ],
     "episodes": 1,
     "voiceovers": [
       "AniLibria",
@@ -2621,13 +2633,12 @@ export const animeData: Anime[] = [
     "rank": 124,
     "type": "Сериалы",
     "shikimori_id": "59845",
-    "img": "https://shikimori.one/assets/globals/missing_original.jpg",
+    "img": "https://cdn.myanimelist.net/images/anime/1744/150433l.jpg",
     "plot": "В тихом городке, где государственная школа Тидори и закрытая академия Кикё соседствуют, их ученики живут словно в разных мирах. Тидори — это школа «грубой силы»: вечные драки на переменах и хулиганы с устрашающими лицами. [character=211617 ринтаро-цумуги], шестнадцатилетний ученик Тидори, вполне привык к репутации «страшного парня» и беззаботно проводит дни в компании верных друзей, помогая по вечерам в семейной кондитерской.\nОднажды в лавку [character=211617 ринтаро-цумуги]Цумуги[/character] заходит таинственная покупательница, но, смущённая, уходит прежде, чем он успевает обратиться к ней. Наутро он обнаруживает записку, в которой девушка — [character=211945 каоруко-вагури], ученица престижной девичьей академии Кикё — признаётся, что вовсе не испугалась его внешности, а напротив, нашла его добрым и искренним. Для [character=211617 ринтаро-цумуги]Ринтаро[/character] это кажется невероятным: как может ученица элитной школы оценить ученика из «гнезда хулиганов»?\nПервая встреча переворачивает мир обоих подростков: под масками социального статуса и предрассудков начинают пробиваться тёплые чувства и желание понять друг друга. Несмотря на враждебность, царящую между Тидори и Кикё, и недоверие ровесников, [character=211617 ринтаро-цумуги]Ринтаро[/character] и [character=211945 каоруко-вагури]Каоруко[/character] решают преодолеть барьеры: от школьных коридоров до собственных страхов. Их история — это нежная, проникновенная драма о том, как искренность и взаимное уважение способны расцветать, подобно самому благородному цветку, даже в самых неприветливых условиях.",
     "screenshots": [
-      "https://shikimori.one/system/screenshots/original/b9e601532d0ba2eb659efbe3b40977bf399e1a58.jpg?1751733670",
-      "https://shikimori.one/system/screenshots/original/2c21529314883348c21d5a448526ba133a384fc9.jpg?1751733672",
-      "https://shikimori.one/system/screenshots/original/90a9532d3fa0fd0bc872f89575804d09230d3373.jpg?1751733675",
-      "https://shikimori.one/system/screenshots/original/195efa3603ea02703e0bb412670d691da776c498.jpg?1751733677"
+      "https://cdn.myanimelist.net/images/anime/1013/148711l.jpg",
+      "https://cdn.myanimelist.net/images/anime/1744/150433l.jpg",
+      "https://cdn.myanimelist.net/images/anime/1133/150446l.jpg"
     ],
     "episodes": 13,
     "voiceovers": [
@@ -2749,13 +2760,11 @@ export const animeData: Anime[] = [
     "rank": 130,
     "type": "Сериалы",
     "shikimori_id": "61322",
-    "img": "https://shikimori.one/assets/globals/missing_original.jpg",
+    "img": "https://cdn.myanimelist.net/images/anime/1785/151710l.jpg",
     "plot": "После тщательно продуманного стратегического манёвра команде [character=148984 сэнку-исигами] удаётся остановить силы доктора [character=190289 ксено-хьюстон-уингфилд]Ксено[/character], обладающие значительно более развитой наукой. Заключённое между двумя фракциями перемирие позволяет заложить в Северной Америке новый оплот прогресса — Город Кукурузы, ставший символом надежды на возрождение человечества.\nОднако долгожданный покой оказывается недолгим. [character=148984 сэнку-исигами]Сэнку[/character] и его соратники отправляются в Южную Америку, к самому эпицентру загадочной вспышки окаменения — в непроходимые джунгли Амазонки. Именно здесь им предстоит основать Город Суперсплава — ключевой этап на пути к созданию космического корабля. Путь к цели будет полон опасностей: враги продолжают идти по их следу, а дикая природа скрывает бесчисленные угрозы и тайны. Но с каждым новым союзником и очередным научным прорывом [character=148984 сэнку-исигами]Сэнку[/character] приближается к разгадке природы окаменения и к финальной стадии своего великого проекта — полёту к звёздам.",
     "screenshots": [
-      "https://shikimori.one/system/screenshots/original/9b1f12e196441bbdb7cae0379036a7bb1138d5be.jpg?1752157682",
-      "https://shikimori.one/system/screenshots/original/c3aff60521487c01e384745685a9c8ffd6037b45.jpg?1752157683",
-      "https://shikimori.one/system/screenshots/original/dd0d2dd165e2c73019c4b520103a7436b1ff3399.jpg?1752157683",
-      "https://shikimori.one/system/screenshots/original/b6d81386073e794355d1d3fa71b3797a3cd48dca.jpg?1752157684"
+      "https://cdn.myanimelist.net/images/anime/1335/148849l.jpg",
+      "https://cdn.myanimelist.net/images/anime/1785/151710l.jpg"
     ],
     "episodes": 12,
     "voiceovers": [
@@ -2875,13 +2884,12 @@ export const animeData: Anime[] = [
     "rank": 136,
     "type": "Сериалы",
     "shikimori_id": "59986",
-    "img": "https://shikimori.one/assets/globals/missing_original.jpg",
+    "img": "https://cdn.myanimelist.net/images/anime/1108/150583l.jpg",
     "plot": "Жизнь [character=144581]Иори Китахары[/character] продолжает играть всеми красками юности на фоне манящего Тихого океана. После переезда в Идзу к своему дяде, владеющему магазином для дайверов, герой вновь с головой погружается в беззаботную студенческую суету — морепродукты, шумные вечеринки, новые друзья и, конечно, приключения в подводном мире. Между смехом, романтикой и попытками преодолеть собственные страхи [character=144581]Иори[/character] открывает для себя, что под слоем весёлой неразберихи скрывается куда более глубокий — и порой пугающе прекрасный — океан взросления и самопознания.",
     "screenshots": [
-      "https://shikimori.one/system/screenshots/original/3c33cb4a119993cbcb2b9a4f88117099b8c9ad23.jpg?1751911179",
-      "https://shikimori.one/system/screenshots/original/d28509f0f3c5bc19f1325773804735f9366398b5.jpg?1751911183",
-      "https://shikimori.one/system/screenshots/original/6ddf72b53c24f309334569f0f076ee4d32504368.jpg?1751911188",
-      "https://shikimori.one/system/screenshots/original/528972b5dc5f8b4dd7d78a9be34d7ff210bdf31d.jpg?1751911192"
+      "https://cdn.myanimelist.net/images/anime/1278/145814l.jpg",
+      "https://cdn.myanimelist.net/images/anime/1088/149903l.jpg",
+      "https://cdn.myanimelist.net/images/anime/1108/150583l.jpg"
     ],
     "episodes": 12,
     "voiceovers": [
@@ -3003,13 +3011,13 @@ export const animeData: Anime[] = [
     "rank": 142,
     "type": "Сериалы",
     "shikimori_id": "63375",
-    "img": "https://shikimori.one/assets/globals/missing_original.jpg",
+    "img": "https://cdn.myanimelist.net/images/anime/1623/156387l.jpg",
     "plot": "Троецарствие Японии",
     "screenshots": [
-      "https://shikimori.one/system/screenshots/original/16ef951528acbc42bfbd521f95e17aa0db1d6b82.jpg?1775405825",
-      "https://shikimori.one/system/screenshots/original/7554d4586d86c0c811aa3b5c367359b2fcafb274.jpg?1775405826",
-      "https://shikimori.one/system/screenshots/original/2f3de25f8cf76b7b2dbe75f8c23198ba6a2fe8dc.jpg?1775405827",
-      "https://shikimori.one/system/screenshots/original/18b763c83df90f85a1cc860a1b2a1446aae51f61.jpg?1775405827"
+      "https://cdn.myanimelist.net/images/anime/1731/155151l.jpg",
+      "https://cdn.myanimelist.net/images/anime/1162/155615l.jpg",
+      "https://cdn.myanimelist.net/images/anime/1623/156387l.jpg",
+      "https://cdn.myanimelist.net/images/anime/1769/156404l.jpg"
     ],
     "episodes": 12,
     "voiceovers": [
