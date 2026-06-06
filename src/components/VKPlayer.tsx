@@ -58,15 +58,27 @@ export function VKPlayer({
 
   if (!videoCode) return <div className="text-white flex items-center justify-center h-full">Неверная ссылка VK</div>;
 
-  let embedUrl = `https://vk.com/video_ext.php?oid=${videoCode.oid}&id=${videoCode.id}&hd=2&autoplay=${playing ? 1 : 0}`;
+  let embedUrl = `https://vk.com/video_ext.php?oid=${videoCode.oid}&id=${videoCode.id}&hd=2&autoplay=${playing ? 1 : 0}&t=${Math.floor(timestamp)}`;
   if (videoCode.hash) {
     embedUrl += `&hash=${videoCode.hash}`;
   }
 
+  // Reload iframe completely when jump is large (manual seek)
+  const [iframeKey, setIframeKey] = useState(0);
+  const lastTimeRef = useRef(timestamp);
+  
+  useEffect(() => {
+    if (Math.abs(timestamp - lastTimeRef.current) > 5) {
+      setIframeKey(k => k + 1);
+    }
+    lastTimeRef.current = timestamp;
+  }, [timestamp]);
+
   return (
     <div className="w-full h-full relative" style={{ pointerEvents: 'auto' }}>
-      {/* VK iframe has limited postMessage API for time sync, so it will mostly just display for viewers */}
+      {/* VK iframe has limited postMessage API for time sync, so we reload on major seeks */}
        <iframe
+          key={iframeKey}
           ref={iframeRef}
           src={embedUrl}
           className="w-full h-full"

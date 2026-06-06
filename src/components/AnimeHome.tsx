@@ -379,7 +379,7 @@ export function AnimeHome({ onBack, user, username, avatar }: AnimeHomeProps) {
                       <div className="prose prose-invert max-w-none mb-8">
                          <h3 className="text-lg font-bold text-zinc-300 mb-2">Сюжет</h3>
                          <p className="text-zinc-400 leading-relaxed">
-                            {selectedAnime.plot}
+                            {selectedAnime.plot.replace(/\[.*?\]/g, '')}
                          </p>
                       </div>
 

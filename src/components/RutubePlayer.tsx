@@ -104,24 +104,30 @@ export function RutubePlayer({
       
       const diff = Math.abs(currentTimeRef.current - expectedTime);
       
-      if (diff > 3) {
-        skipNextEventRef.current = true;
-        sendCommand('player:setCurrentTime', { time: expectedTime });
-        setTimeout(() => { skipNextEventRef.current = false; }, 1000);
-      }
-
-      // If viewer manually alters state, override them to match room
       if (!isAdmin) {
+        // Viewers are forced to sync with the room state
+        if (diff > 3) {
+          skipNextEventRef.current = true;
+          sendCommand('player:setCurrentTime', { time: expectedTime });
+          setTimeout(() => { skipNextEventRef.current = false; }, 1000);
+        }
+
+        // If viewer manually alters state, override them to match room
         if (playing && !isPlayingRef.current) {
           sendCommand('player:play');
         } else if (!playing && isPlayingRef.current) {
           sendCommand('player:pause');
         }
+      } else {
+        // Creator: If they scrubbed natively in Rutube, update the room!
+        if (diff > 3 && !skipNextEventRef.current) {
+           onSeek(currentTimeRef.current);
+        }
       }
     }, 2000);
     
     return () => clearInterval(interval);
-  }, [playing, timestamp, lastUpdateAt, isAdmin]);
+  }, [playing, timestamp, lastUpdateAt, isAdmin, onSeek]);
 
   const checkSeek = () => {
     if (isAdmin) {
